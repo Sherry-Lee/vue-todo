@@ -2,7 +2,8 @@
   <div id="app">
     <h1 v-text="title"></h1>
     <div class="enter-tasks">
-      <div class="promt"></div>
+      <div class="addicon">
+      </div>
       <input v-model="newItem" class="model-item" v-on:keyup.enter="addNew" placeholder="Add new task"/>
     </div>
     <ul>
@@ -42,6 +43,15 @@ export default {
         isFinished: false
       })
       this.newItem = ""
+    },
+    inputHover: function(){
+      var $addiconBefore = $(".addicon:before");
+      $("enter-tasks input").focus(function(){
+        $addiconBefore.css('height',0);
+      });
+      $("enter-tasks input").blur(function(){
+        $addiconBefore.css('height',"100%");
+      });
     }
   }
 }
@@ -82,9 +92,10 @@ ul li, li{
   border-radius: 3px;
   border: none;
   background-color: transparent;
-  padding-left: 60px;
+  padding: 5px 10px;
   box-sizing: border-box;
   color: white;
+  width: 95%;
 }
 input::-webkit-input-placeholder {
 　　color:white;
@@ -97,5 +108,21 @@ input::-moz-placeholder {
 }
 input:-ms-input-placeholder {
 　　color:white;
+}
+.addicon{
+  width: 33px;
+  height: 33px;
+  float: left;
+  padding: 5px 0;
+  box-sizing: border-box;
+  border-right: 1px solid white;
+  margin: 10px;
+}
+.addicon:before{
+    content: "";
+    color: white;
+    background: url("./assets/add.png") no-repeat;
+    height: 100%;
+    display: block;
 }
 </style>
