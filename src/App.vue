@@ -4,7 +4,7 @@
     <div class="enter-tasks">
       <div class="addicon">
       </div>
-      <input v-model="newItem" class="model-item" v-on:keyup.enter="addNew" placeholder="Add new task"/>
+      <input v-model="newItem" class="model-item" ref="input" v-on:focus="inputFocus" v-on:blur="inputBlur" v-on:keyup.enter="addNew" placeholder="Add new task"/>
     </div>
     <ul>
       <li v-for="item in items" @click="toggleFinished(item)" v-bind:class="{finished: item.isFinished}">
@@ -16,7 +16,6 @@
 
 <script>
 import Store from './store'
-console.log(Store);
 export default {
   data: function(){
     return{
@@ -44,14 +43,11 @@ export default {
       })
       this.newItem = ""
     },
-    inputHover: function(){
-      var $addiconBefore = $(".addicon:before");
-      $("enter-tasks input").focus(function(){
-        $addiconBefore.css('height',0);
-      });
-      $("enter-tasks input").blur(function(){
-        $addiconBefore.css('height',"100%");
-      });
+    inputFocus: function(){
+      this.$refs.input.previousElementSibling.className += " beforeclass";
+    },
+    inputBlur: function(){
+      this.$refs.input.previousElementSibling.className = this.$refs.input.previousElementSibling.className.replace(/\s+beforeclass/,'');
     }
   }
 }
@@ -120,9 +116,12 @@ input:-ms-input-placeholder {
 }
 .addicon:before{
     content: "";
-    color: white;
     background: url("./assets/add.png") no-repeat;
     height: 100%;
     display: block;
 }
+.beforeclass:before{
+  height: 0;
+}
+
 </style>

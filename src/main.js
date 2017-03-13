@@ -12,4 +12,15 @@ new Vue({
   router,
   template: '<App/>',
   components: { App }
+});
+Vue.directive('focus', {
+  inserted: function (el) {
+    el.focus();
+  }
+});
+Vue.directive('blur', {
+  inserted: function (el) {
+    el.blur();
+  }
 })
+
