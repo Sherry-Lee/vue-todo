@@ -7,8 +7,11 @@
       <input v-model="newItem" class="model-item" ref="input" v-on:focus="inputFocus" v-on:blur="inputBlur" v-on:keyup.enter="addNew" placeholder="Add new task"/>
     </div>
     <ul>
-      <li v-for="item in items" @click="toggleFinished(item)" v-bind:class="{finished: item.isFinished}">
-        {{item.label}}
+      <li v-for="item in items" @click="toggleFinished(item)"  class="tasks rel">
+        <div class="finish-task abs">
+          <span v-bind:class="{finished: item.isFinished}">{{item.label}}</span>
+        </div>
+         <span class="delete abs" @click="deleteItem(item)">delete</span>
       </li>
     </ul>
   </div>
@@ -19,7 +22,7 @@ import Store from './store'
 export default {
   data: function(){
     return{
-      title: "this is a todo list",
+      title: "a todo list by Vue",
       items:Store.fetch(),
       newItem: ''
     }
@@ -48,6 +51,10 @@ export default {
     },
     inputBlur: function(){
       this.$refs.input.previousElementSibling.className = this.$refs.input.previousElementSibling.className.replace(/\s+beforeclass/,'');
+    },
+    deleteItem: function(item){
+      debugger;
+      console.log(item);
     }
   }
 }
@@ -61,8 +68,53 @@ html,body{
   padding: 0;
   background: url("./assets/bg.jpg") no-repeat;
 }
+ul{
+  padding-left: 0;
+  width: 100%;
+}
 ul li, li{
   list-style-type: none;
+}
+.rel{
+  position: relative;
+}
+.abs{
+  position: absolute;
+}
+.left{
+  float: left;
+}
+.right{
+  float: right;
+}
+.tasks{
+  height: 50px;
+  width: 100%;
+  background-color: white;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+.delete{
+
+}
+.finish-task{
+  background: url("./assets/finish.png") no-repeat;
+  top: 15px;
+  left: 13px;
+  height: 20px;
+  width: 20px;
+}
+.finish-task span{
+  font-size: 1rem;
+  line-height: 1rem;
+  padding-top: 3px;
+  display: inline-block;
+  margin-left: 40px;
+}
+.tasks .delete{
+  cursor: pointer;
+  right: 20px;
+  top: 18px;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -75,7 +127,7 @@ ul li, li{
   height: 100%;
 }
 .finished{
-  text-decoration: underline;
+  text-decoration: line-through;
 }
 .enter-tasks,
 .model-item{
@@ -120,8 +172,6 @@ input:-ms-input-placeholder {
     height: 100%;
     display: block;
 }
-.beforeclass:before{
-  height: 0;
-}
+
 
 </style>
