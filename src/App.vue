@@ -8,8 +8,8 @@
     </div>
     <ul>
       <li v-for="item in items" @click="toggleFinished(item)"  class="tasks rel">
-        <div class="finish-task abs">
-          <span v-bind:class="{finished: item.isFinished}">{{item.label}}</span>
+        <div class="finish-task abs" v-bind:class="{finished: item.isFinished}">
+          <span>{{item.label}}</span>
         </div>
          <span class="delete abs" @click="deleteItem(item)">delete</span>
       </li>
@@ -19,11 +19,13 @@
 
 <script>
 import Store from './store'
+import Finish from './finish'
 export default {
   data: function(){
     return{
       title: "a todo list by Vue",
       items:Store.fetch(),
+      // finishedItems:Finish.fetch(),
       newItem: ''
     }
   },
@@ -34,6 +36,13 @@ export default {
       },
       deep: true
     }
+    // ,
+    // finishedItems:{
+    //   handler:function(finishedItems){
+    //     Finish.save(finishedItems)
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
     toggleFinished: function(item){
@@ -53,8 +62,10 @@ export default {
       this.$refs.input.previousElementSibling.className = this.$refs.input.previousElementSibling.className.replace(/\s+beforeclass/,'');
     },
     deleteItem: function(item){
-      debugger;
-      console.log(item);
+      this.finishedItems.push(item);
+      console.log(this.finishedItems);
+      var index = this.items.indexOf(item);
+      this.items.splice(index,1);
     }
   }
 }
@@ -94,15 +105,13 @@ ul li, li{
   border-radius: 3px;
   margin-top: 5px;
 }
-.delete{
-
-}
 .finish-task{
-  background: url("./assets/finish.png") no-repeat;
+  background: url("./assets/check.png") no-repeat;
   top: 15px;
   left: 13px;
   height: 20px;
   width: 20px;
+  cursor: pointer;
 }
 .finish-task span{
   font-size: 1rem;
@@ -127,6 +136,10 @@ ul li, li{
   height: 100%;
 }
 .finished{
+  background: url("./assets/finish.png") no-repeat;
+  background-color: white;
+}
+.finished span{
   text-decoration: line-through;
 }
 .enter-tasks,
@@ -171,6 +184,9 @@ input:-ms-input-placeholder {
     background: url("./assets/add.png") no-repeat;
     height: 100%;
     display: block;
+}
+.beforeclass:before{
+  display: none;
 }
 
 
