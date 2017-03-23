@@ -8,7 +8,7 @@
     </div>
     <ul>
       <li v-for="item in items" @click="toggleFinished(item)"  class="tasks rel">
-        <div class="finish-task abs" v-bind:class="{finished: item.isFinished}">
+        <div class="finish-task abs"  @click="addFinished(item)"  v-bind:class="{finished: item.isFinished}">
           <span>{{item.label}}</span>
         </div>
          <span class="delete abs" @click="deleteItem(item)">delete</span>
@@ -25,7 +25,7 @@ export default {
     return{
       title: "a todo list by Vue",
       items:Store.fetch(),
-      // finishedItems:Finish.fetch(),
+      finish:Finish.fetch(),
       newItem: ''
     }
   },
@@ -36,13 +36,13 @@ export default {
       },
       deep: true
     }
-    // ,
-    // finishedItems:{
-    //   handler:function(finishedItems){
-    //     Finish.save(finishedItems)
-    //   },
-    //   deep: true
-    // }
+    ,
+    finishedItems:{
+      handler:function(finish){
+        Finish.save(finish)
+      },
+      deep: true
+    }
   },
   methods: {
     toggleFinished: function(item){
@@ -62,10 +62,17 @@ export default {
       this.$refs.input.previousElementSibling.className = this.$refs.input.previousElementSibling.className.replace(/\s+beforeclass/,'');
     },
     deleteItem: function(item){
-      this.finishedItems.push(item);
-      console.log(this.finishedItems);
       var index = this.items.indexOf(item);
       this.items.splice(index,1);
+    },
+    addFinished: function(item){
+      var index = this.finish.indexOf(item);
+      if( index < 0){
+          this.finish.push(item);
+      }else{
+        this.finish.splice(index,1);
+      }
+      
     }
   }
 }
